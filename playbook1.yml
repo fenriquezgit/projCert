@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  vars:
+    ansible_become_pass: edureka
+  tasks:
+    - name: install chromium
+      become: yes
+      become_user: root
+      package:
+        name: chromium-browser
+        state: present
+    - name: Install git
+      package:
+        name: git
+        state: present
+        update_cache: yes
+    - name: Install chromedriver
+      become: yes
+      become_method: sudo
+      unarchive:
+        src: https://chromedriver.storage.googleapis.com/2.16/chromedriver_linux64.zip
+        copy: no
+        dest: /usr/bin
+        mode: u=rwx,g=rx,o=rx
+        creates: /usr/bin/chromedriver
